@@ -27,11 +27,17 @@ python -m venv env
 
 3: Activa el entorno
  Windows: env\Scripts\activate
+ 
  Linux/macOS: source env/bin/activate
+ 
 4: Descargar requerimientos
+
 pip install -r requirements.txt
+
 5: Cómo ejecutar
+
 cd quiz_site
+
 python manage.py runserver
 
 
