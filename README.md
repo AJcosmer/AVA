@@ -25,9 +25,11 @@ git clone https://github.com/AJcosmer/AVA.git
 cd AVA
 
 2: Crear entorno virtual
+
 python -m venv env
 
 3: Activa el entorno
+
  Windows: env\Scripts\activate
  
  Linux/macOS: source env/bin/activate
