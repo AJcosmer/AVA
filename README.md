@@ -21,7 +21,9 @@ Sigue estos pasos para correr el proyecto localmente:
 
 
 git clone https://github.com/AJcosmer/AVA.git
+
 cd AVA
+
 2: Crear entorno virtual
 python -m venv env
 
