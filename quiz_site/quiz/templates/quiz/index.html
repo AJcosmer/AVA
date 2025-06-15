@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Juego de Preguntas Matemáticas</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #6dd5ed, #2193b0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 750px;
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease-in-out;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+    }
+
+    select, input {
+      padding: 8px;
+      margin: 8px 0 16px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      background: #2193b0;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      margin: 10px 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #1b7a96;
+    }
+
+    #quiz-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      font-weight: bold;
+      color: #444;
+    }
+
+    #options button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      font-size: 16px;
+      background-color: #f4f4f4;
+      color: #000;
+      border: 2px solid #ddd;
+      border-radius: 8px;
+      transition: background 0.2s ease;
+    }
+
+    #options button:hover {
+      background-color: #d1ecf1;
+    }
+
+    #score-container h2 {
+      color: #27ae60;
+      text-align: center;
+    }
+
+    ul {
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    li {
+      margin-bottom: 15px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .progress-bar {
+      height: 10px;
+      background: #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    .progress {
+      height: 100%;
+      background: #27ae60;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    #login-error, #register-error {
+      color: red;
+      margin-top: -10px;
+      margin-bottom: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+
+      button {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1><i class="fas fa-brain"></i> Juego de Preguntas Matemáticas</h1>
+
+    <!-- Login -->
+    <div id="login-container">
+      <label for="username">Usuario:</label>
+      <input type="text" id="username" placeholder="Usuario">
+      <label for="password">Contraseña:</label>
+      <input type="password" id="password" placeholder="Contraseña">
+      <button onclick="login()">Iniciar Sesión</button>
+      <p id="login-error"></p>
+    </div>
+
+    <!-- Registro -->
+    <div id="register-container" class="hidden">
+      <label for="new-username">Nuevo usuario:</label>
+      <input type="text" id="new-username" placeholder="Usuario">
+      <label for="new-password">Contraseña:</label>
+      <input type="password" id="new-password" placeholder="Contraseña">
+      <button onclick="register()">Registrarse</button>
+      <p id="register-error"></p>
+    </div>
+
+    <!-- Botón para alternar entre login y registro -->
+    <div style="text-align: center;">
+       <button id="toggle-button" onclick="toggleForm()">¿No tienes cuenta? Regístrate</button>
+    </div>
+
+
+    <!-- Configuración del juego -->
+    <div id="config" class="hidden">
+      <label for="difficulty">Dificultad:</label>
+      <select id="difficulty">
+        <option value="easy">Fácil</option>
+        <option value="medium">Media</option>
+        <option value="hard">Difícil</option>
+      </select>
+
+      <label for="num-questions">Cantidad de preguntas:</label>
+      <input type="number" id="num-questions" min="1" max="50" value="5">
+
+      <label for="time-question">Tiempo por pregunta (segundos):</label>
+      <input type="number" id="time-question" min="5" max="60" value="15">
+
+      <button onclick="startGame()">Comenzar</button>
+    </div>
+
+    <!-- Juego en progreso -->
+    <div id="quiz-container" class="hidden">
+      <div id="quiz-header">
+        <span id="question-number"></span>
+        <span id="timer"></span>
+      </div>
+      <p id="question">Pregunta aquí...</p>
+      <div id="options"></div>
+      <button onclick="nextQuestion()">Siguiente</button>
+      <div class="progress-bar"><div class="progress" id="progress-bar"></div></div>
+    </div>
+
+    <!-- Resultado final -->
+    <div id="score-container" class="hidden">
+      <h2>¡Juego terminado!</h2>
+      <p id="final-score"></p>
+      <div id="review"></div>
+      <button onclick="resetGame()">Reiniciar</button>
+    </div>
+  </div>
+
+  <script src="{% static 'quiz/script.js' %}"></script>
+  <script>
+    function toggleForm() {
+      const loginContainer = document.getElementById('login-container');
+      const registerContainer = document.getElementById('register-container');
+      const toggleBtn = document.querySelector('button[onclick="toggleForm()"]');
+
+      if (loginContainer.classList.contains('hidden')) {
+        loginContainer.classList.remove('hidden');
+        registerContainer.classList.add('hidden');
+        toggleBtn.textContent = "¿No tienes cuenta? Regístrate";
+      } else {
+        loginContainer.classList.add('hidden');
+        registerContainer.classList.remove('hidden');
+        toggleBtn.textContent = "¿Ya tienes cuenta? Inicia sesión";
+      }
+    }
+
+    function register() {
+      const username = document.getElementById("new-username").value;
+      const password = document.getElementById("new-password").value;
+
+      fetch("/register/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ username, password })
+      })
+      .then(res => {
+        if (!res.ok) {
+          return res.json().then(data => { throw new Error(data.error || "Error al registrar") });
+        }
+        return res.json();
+      })
+      .then(data => {
+        alert("Registro exitoso. Ahora puedes iniciar sesión.");
+        toggleForm();
+      })
+      .catch(err => {
+        document.getElementById("register-error").textContent = err.message;
+      });
+    }
+  </script>
+</body>
+</html>
