@@ -1,4 +1,4 @@
-# 🧠 AVA - Aplicación de Juego de Matemáticas
+# 🧠- Aplicación de Juego de Matemáticas
 Autores: Angel Acosta, Angenerys Sarabia, Heiber Brito, Esteban Surmay
 
 
