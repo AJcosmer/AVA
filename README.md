@@ -1,5 +1,4 @@
 # 🧠- Aplicación de Juego de Matemáticas
-Autores: Angel Acosta, Angenerys Sarabia, Heiber Brito, Esteban Surmay
 
 
 Este proyecto es un juego de preguntas matemáticas con interfaz web, desarrollado en Python. Permite a los usuarios resolver operaciones con diferentes niveles de dificultad.
