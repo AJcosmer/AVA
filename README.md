@@ -8,7 +8,7 @@ Este proyecto es un juego de preguntas matemáticas con interfaz web, desarrolla
 ## 🚀 Requisitos
 
 - Python 3.8 o superior
-- pip (ya viene con Python)
+- pip (ya viene con Python).
 
 ---
 
